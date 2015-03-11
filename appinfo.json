@@ -1,0 +1,36 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "rgarth@gmail.com",
+    "longName": "P-TIME",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "fonts/NordicaAdvancedRegular.otf",
+                "name": "NORDICA_REGULAR_42",
+                "type": "font"
+            },
+            {
+                "file": "images/Empty.png",
+                "name": "EMPTY",
+                "type": "png"
+            },
+            {
+                "file": "images/Full.png",
+                "name": "FULL",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "P-TIME",
+    "uuid": "4fe5b9e0-7da7-49f5-8d0b-e4d1886b9232",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
