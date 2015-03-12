@@ -9,18 +9,29 @@
     "resources": {
         "media": [
             {
-                "file": "fonts/NordicaAdvancedRegular.otf",
-                "name": "NORDICA_REGULAR_42",
+                "file": "fonts/NordicaAdvancedRegularExtended.otf",
+                "name": "NORDOCA_ADVANCED_REGULAR_EXTENDED_52",
                 "type": "font"
             },
             {
-                "file": "images/Empty.png",
-                "name": "EMPTY",
+                "file": "fonts/NordicaAdvancedRegular.otf",
+                "name": "NORDICA_ADVANCE_REGULAR_52",
+                "type": "font"
+            },
+            {
+                "file": "images/Icon.png",
+                "menuIcon": true,
+                "name": "ICON",
                 "type": "png"
             },
             {
                 "file": "images/Full.png",
                 "name": "FULL",
+                "type": "png"
+            },
+            {
+                "file": "images/Empty.png",
+                "name": "EMPTY",
                 "type": "png"
             }
         ]

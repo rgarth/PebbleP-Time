@@ -78,11 +78,11 @@ static void bt_handler(bool connected) {
 }
 
 static void main_window_load(Window *window) {
-  GFont custom_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_NORDICA_REGULAR_42)); 
+  GFont custom_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_NORDOCA_ADVANCED_REGULAR_EXTENDED_52)); 
 
   // Create TextLayers for time
-  h_text_layer = text_layer_create(GRect(0,  18, 100, 44));
-  m_text_layer = text_layer_create(GRect(0, 80, 100, 44));
+  h_text_layer = text_layer_create(GRect(0,  18, 114, 54));
+  m_text_layer = text_layer_create(GRect(0, 74, 114, 54));
   text_layer_set_background_color(h_text_layer, GColorBlack);
   text_layer_set_background_color(m_text_layer, GColorBlack);  
   text_layer_set_text_color(h_text_layer, GColorWhite);
