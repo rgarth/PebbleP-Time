@@ -14,11 +14,6 @@
                 "type": "font"
             },
             {
-                "file": "fonts/NordicaAdvancedRegular.otf",
-                "name": "NORDICA_ADVANCE_REGULAR_52",
-                "type": "font"
-            },
-            {
                 "file": "images/Icon.png",
                 "menuIcon": true,
                 "name": "ICON",
@@ -40,7 +35,7 @@
     "shortName": "P-TIME",
     "uuid": "4fe5b9e0-7da7-49f5-8d0b-e4d1886b9232",
     "versionCode": 1,
-    "versionLabel": "1.0",
+    "versionLabel": "1.1",
     "watchapp": {
         "watchface": true
     }
