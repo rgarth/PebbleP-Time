@@ -1,9 +1,14 @@
 #include <pebble.h>
+  
+#define KEY_INVERT 0
 
 static Window *s_main_window; 
 GBitmap *full_bitmap, *empty_bitmap;
 static BitmapLayer *p_100_layer, *p_75_layer, *p_50_layer, *p_25_layer;
 static TextLayer *h_text_layer, *m_text_layer;
+static InverterLayer *s_inverter_layer;
+
+bool invert = 0;
 
 void show_battery_stats (){
   int8_t charge;
@@ -27,8 +32,7 @@ void show_battery_stats (){
   if (charge <= 10) {
     // Show battery as empty
     bitmap_layer_set_bitmap(p_25_layer, empty_bitmap);    
-  } 
-          
+  }          
 }
 
 static void show_time() {
@@ -52,7 +56,8 @@ static void show_time() {
   
   text_layer_set_text(h_text_layer, h_buffer);
   text_layer_set_text(m_text_layer, m_buffer);
-  
+ 
+
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
@@ -75,6 +80,45 @@ static void bt_handler(bool connected) {
     vibes_double_pulse(); 
   }
   
+}
+
+static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Message received!");
+  // Read first item
+  Tuple *t = dict_read_first(iterator);
+  // For all items
+  while(t != NULL) {
+    // Which key was received?
+    switch(t->key) {
+    case KEY_INVERT:
+      invert = t->value->int8;
+      persist_write_bool(KEY_INVERT, invert);
+      APP_LOG(APP_LOG_LEVEL_INFO, "Storing invert value: %i", invert);
+      if (invert) {
+        layer_add_child(window_get_root_layer(s_main_window), inverter_layer_get_layer(s_inverter_layer));
+      } else {
+        layer_remove_from_parent(inverter_layer_get_layer(s_inverter_layer));
+      }
+      break;
+    default:
+      APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
+      break;
+    }
+    // Look for next item
+    t = dict_read_next(iterator);
+  }
+}
+
+static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+}
+
+static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+}
+
+static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
 static void main_window_load(Window *window) {
@@ -118,6 +162,11 @@ static void main_window_load(Window *window) {
   bitmap_layer_set_background_color(p_25_layer, GColorBlack); 
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(p_25_layer));
   
+  // Creat Inverter Layer
+  s_inverter_layer = inverter_layer_create(GRect(0, 0, 144, 168));
+  if ( invert ) {
+    layer_add_child(window_get_root_layer(window), inverter_layer_get_layer(s_inverter_layer)); 
+  }
 }
 
 static void main_window_unload(Window *window) {
@@ -131,7 +180,17 @@ static void main_window_unload(Window *window) {
 } 
 
 static void init () {
+  invert = persist_read_int(KEY_INVERT);
+  APP_LOG(APP_LOG_LEVEL_INFO, "Reading invert value: %i", invert);  
+
+  // Register callbacks
+  app_message_register_inbox_received(inbox_received_callback);
+  app_message_register_inbox_dropped(inbox_dropped_callback);
+  app_message_register_outbox_failed(outbox_failed_callback);
+  app_message_register_outbox_sent(outbox_sent_callback);
   
+  // Open AppMessage
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
   
   // Create main Window element and assign to pointer
   s_main_window = window_create();  
@@ -160,6 +219,8 @@ static void init () {
 static void deinit () {
   // Destroy Window
   window_destroy(s_main_window);
+  tick_timer_service_unsubscribe();
+  bluetooth_connection_service_unsubscribe();
 }
 
 int main(void) {

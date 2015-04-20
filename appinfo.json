@@ -1,10 +1,12 @@
 {
-    "appKeys": {},
+    "appKeys": {
+        "KEY_INVERT": 0
+    },
     "capabilities": [
-        ""
+        "configurable"
     ],
     "companyName": "rgarth@gmail.com",
-    "longName": "P-TIME",
+    "longName": "PTime",
     "projectType": "native",
     "resources": {
         "media": [
@@ -32,10 +34,10 @@
         ]
     },
     "sdkVersion": "2",
-    "shortName": "P-TIME",
+    "shortName": "PTime",
     "uuid": "4fe5b9e0-7da7-49f5-8d0b-e4d1886b9232",
     "versionCode": 1,
-    "versionLabel": "1.1",
+    "versionLabel": "1.2",
     "watchapp": {
         "watchface": true
     }
